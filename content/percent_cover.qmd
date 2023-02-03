@@ -39,7 +39,7 @@ rpn_2016_main.plob
 ```
 
 First use a two-way ANOVA on the raw data, percent cover given by the proportional value.
-Run a two-way ANOVA with and without interaction.
+Run a two-way ANOVA without interaction becuase there is no replication of .
 
 ```{r}
 plob.lm1 <- lm(cover ~ location + depth, data = rpn_2016_main.plob)
@@ -68,8 +68,6 @@ plot(plob.lm2)
 ```{r}
 summary(plob.lm2)
 ```
-
-
 
 ```{r}
 plob.bm4 <- betareg(plob.scaled ~ bov, data = rpn_2016_main.plob_scaled, 
