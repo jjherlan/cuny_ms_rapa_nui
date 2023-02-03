@@ -29,9 +29,12 @@ rpn_2016_main2
 ```
 
 ```{r}
-rpn_2016_main2 <- read_csv("rpn_2016_main.sum1.csv")
+rpn_2016_main <- read_csv("rpn_2016_main.sum1.csv")
 ```
 
+```{r}
+rpn_2016_main
+```
 
 
 
