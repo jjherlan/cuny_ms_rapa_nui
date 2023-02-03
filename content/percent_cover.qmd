@@ -28,3 +28,30 @@ rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
 rpn_2016_main2
 ```
 
+```{r}
+rpn_2016_main2 <- read_csv("rpn_2016_main.sum1.csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
