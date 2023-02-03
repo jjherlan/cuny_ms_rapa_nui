@@ -20,3 +20,11 @@ require(VGAM)
 require(Rmisc)
 ```
 
+```{r}
+rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
+```
+
+```{r}
+rpn_2016_main2
+```
+
