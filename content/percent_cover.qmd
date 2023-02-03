@@ -4,7 +4,7 @@ author: "JJH"
 editor: visual
 ---
 
-```{r}
+```{r, include = FALSE}
 require(tidyverse)
 require(plyr)
 require(betareg)
@@ -24,7 +24,7 @@ require(Rmisc)
 rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_2016_main2
 ```
 
