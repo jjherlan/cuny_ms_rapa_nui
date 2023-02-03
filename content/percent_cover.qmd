@@ -18,15 +18,69 @@ require(nlme)
 require(rstan)
 require(VGAM)
 require(Rmisc)
-```
-
-```{r}
-rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
+require(car)
 ```
 
 ```{r, include = FALSE}
-rpn_2016_main2
+rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
 ```
+
+<div style = "margin-bottom:50px;">
+```{r}
+rpn_2016_main.plob <- 
+  as_tibble(rpn_2016_main2) %>%
+  mutate_at(vars(location, photo, group), factor) %>%
+  filter(group == "plob")
+```
+</div>
+
+```{r, include = TRUE}
+rpn_2016_main.plob
+```
+
+First use a two-way ANOVA on the raw data, percent cover given by the proportional value.
+Run a two-way ANOVA with and without interaction.
+
+```{r}
+plob.lm1 <- lm(cover ~ location + depth, data = rpn_2016_main.plob)
+plob.lm2 <- lm(cover ~ location * depth, data = rpn_2016_main.plob)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.lm1)
+```
+
+```{r}
+summary(plob.lm1)
+```
+
+```{r}
+Anova(plob.lm1)
+```
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.lm2)
+```
+
+```{r}
+summary(plob.lm2)
+```
+
+
+
+```{r}
+plob.bm4 <- betareg(plob.scaled ~ bov, data = rpn_2016_main.plob_scaled, 
+                    link = c("logit"), link.phi = NULL,
+                   type = c("ML"))
+```
+
+
+
+summary(plob.bm4)
+
 
 ```{r}
 rpn_2016_main <- read_csv("rpn_2016_main.sum1.csv")
@@ -35,10 +89,6 @@ rpn_2016_main <- read_csv("rpn_2016_main.sum1.csv")
 ```{r}
 rpn_2016_main
 ```
-
-
-
-
 
 
 
