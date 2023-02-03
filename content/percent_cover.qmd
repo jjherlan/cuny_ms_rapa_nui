@@ -1,0 +1,22 @@
+---
+title: "Percent Cover of Benthic Functional Groups"
+author: "JJH"
+editor: visual
+---
+
+```{r}
+require(tidyverse)
+require(plyr)
+require(betareg)
+require(lmtest)
+require(glmmTMB)
+require(boot)
+require(emmeans)
+require(brms)
+require(mvtnorm)
+require(nlme)
+require(rstan)
+require(VGAM)
+require(Rmisc)
+```
+
