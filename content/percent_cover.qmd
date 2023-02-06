@@ -34,7 +34,7 @@ rpn_2016_main2
 <div style = "margin-bottom:50px;">
 ```{r}
 rpn_2016_main.plob <- 
-  as_tibble(rpn_2016_main2) %>%
+  rpn_2016_main2 %>%
   filter(group == "plob") %>%
   mutate(transect = case_when(
     startsWith(photo, "t1_") ~ "transect1",
