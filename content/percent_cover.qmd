@@ -23,7 +23,7 @@ require(car)
 
 ```{r, include = FALSE}
 rpn_2016_main2 <- read.csv("rpn_2016_main2.csv") %>%
-  as_tibble(rpn_2016_main2) %>%
+  as_tibble() %>%
   mutate_at(vars(location, depth, group), factor)
 ```
 
