@@ -237,7 +237,350 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rpn_2016_main2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"rpn_2016_main2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rpn_2016_main2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6,480 × 7
+   location depth photo group            successes failures cover
+   &lt;fct&gt;    &lt;fct&gt; &lt;chr&gt; &lt;fct&gt;                &lt;int&gt;    &lt;int&gt; &lt;dbl&gt;
+ 1 ana      dp    t1_1  abiotic                  1       99  0.01
+ 2 ana      dp    t1_1  macro                   17       83  0.17
+ 3 ana      dp    t1_1  non_reef                 9       91  0.09
+ 4 ana      dp    t1_1  plob                    62       38  0.62
+ 5 ana      dp    t1_1  turf                    11       89  0.11
+ 6 ana      dp    t1_1  poci                     0      100  0   
+ 7 ana      dp    t1_1  cca                      0      100  0   
+ 8 ana      dp    t1_1  biotic                   0      100  0   
+ 9 ana      dp    t1_1  hard_coral_other         0      100  0   
+10 ana      dp    t1_10 abiotic                  0      100  0   
+# … with 6,470 more rows</code></pre>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rpn_2016_main.plob <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  rpn_2016_main2 <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">"plob"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transect =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(photo, <span class="st">"t1_"</span>) <span class="sc">~</span> <span class="st">"transect1"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(photo, <span class="st">"t2_"</span>) <span class="sc">~</span> <span class="st">"transect2"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(photo, <span class="st">"t3_"</span>) <span class="sc">~</span> <span class="st">"transect3"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">startsWith</span>(photo, <span class="st">"t4_"</span>) <span class="sc">~</span> <span class="st">"transect4"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location, group, transect), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rpn_2016_main.plob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 720 × 8
+   location depth photo group successes failures cover transect 
+   &lt;fct&gt;    &lt;fct&gt; &lt;chr&gt; &lt;fct&gt;     &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;fct&gt;    
+ 1 ana      dp    t1_1  plob         62       38  0.62 transect1
+ 2 ana      dp    t1_10 plob         57       43  0.57 transect1
+ 3 ana      dp    t1_11 plob         83       17  0.83 transect1
+ 4 ana      dp    t1_12 plob         55       45  0.55 transect1
+ 5 ana      dp    t1_13 plob         66       34  0.66 transect1
+ 6 ana      dp    t1_14 plob         81       19  0.81 transect1
+ 7 ana      dp    t1_15 plob         67       33  0.67 transect1
+ 8 ana      dp    t1_2  plob         75       25  0.75 transect1
+ 9 ana      dp    t1_3  plob         60       40  0.6  transect1
+10 ana      dp    t1_4  plob         75       25  0.75 transect1
+# … with 710 more rows</code></pre>
+</div>
+</div>
+<p>First use a two-way ANOVA on the raw data, percent cover given by the proportional value. Run a two-way ANOVA with and without interaction.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plob.lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cover <span class="sc">~</span> location <span class="sc">+</span> depth, <span class="at">data =</span> rpn_2016_main.plob)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plob.lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cover <span class="sc">~</span> location <span class="sc">*</span> depth, <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plob.lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob.lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = cover ~ location + depth, data = rpn_2016_main.plob)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.63835 -0.13158  0.00463  0.15479  0.87454 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.66835    0.02125  31.455  &lt; 2e-16 ***
+locationman -0.11061    0.02453  -4.508 7.63e-06 ***
+locationmtt -0.27206    0.02453 -11.089  &lt; 2e-16 ***
+locationse  -0.57289    0.02453 -23.350  &lt; 2e-16 ***
+depthmd      0.10950    0.02125   5.154 3.31e-07 ***
+depthsh      0.03612    0.02125   1.700   0.0895 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.2328 on 714 degrees of freedom
+Multiple R-squared:  0.4751,    Adjusted R-squared:  0.4714 
+F-statistic: 129.2 on 5 and 714 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob.lm1, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: cover
+            Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept) 53.603   1 989.439 &lt; 2.2e-16 ***
+location    33.512   3 206.198 &lt; 2.2e-16 ***
+depth        1.494   2  13.792 1.328e-06 ***
+Residuals   38.681 714                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plob.lm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob.lm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = cover ~ location * depth, data = rpn_2016_main.plob)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.62567 -0.09350 -0.00725  0.08017  0.70833 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          0.65567    0.02194  29.884  &lt; 2e-16 ***
+locationman         -0.43667    0.03103 -14.073  &lt; 2e-16 ***
+locationmtt         -0.07417    0.03103  -2.390 0.017094 *  
+locationse          -0.39400    0.03103 -12.698  &lt; 2e-16 ***
+depthmd              0.07583    0.03103   2.444 0.014767 *  
+depthsh              0.10783    0.03103   3.475 0.000541 ***
+locationman:depthmd  0.47617    0.04388  10.852  &lt; 2e-16 ***
+locationmtt:depthmd -0.13383    0.04388  -3.050 0.002374 ** 
+locationse:depthmd  -0.20767    0.04388  -4.733 2.68e-06 ***
+locationman:depthsh  0.50200    0.04388  11.440  &lt; 2e-16 ***
+locationmtt:depthsh -0.45983    0.04388 -10.479  &lt; 2e-16 ***
+locationse:depthsh  -0.32900    0.04388  -7.498 1.95e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1699 on 708 degrees of freedom
+Multiple R-squared:  0.7225,    Adjusted R-squared:  0.7182 
+F-statistic: 167.6 on 11 and 708 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob.lm2, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: cover
+                Sum Sq  Df  F value    Pr(&gt;F)    
+(Intercept)    25.7939   1 893.0763 &lt; 2.2e-16 ***
+location        8.8040   3 101.6087 &lt; 2.2e-16 ***
+depth           0.3681   2   6.3717  0.001809 ** 
+location:depth 18.2322   6 105.2105 &lt; 2.2e-16 ***
+Residuals      20.4485 708                       
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p><strong>Two-Way ANOVA – Logit transformed</strong></p>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plob.lm.logit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">logit</span>(cover) <span class="sc">~</span> location <span class="sc">*</span> depth, <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in logit(cover): proportions remapped to (0.025, 0.975)</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plob.lm.logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob.lm.logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = logit(cover) ~ location * depth, data = rpn_2016_main.plob)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.5196 -0.5482  0.0412  0.4716  4.2334 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           0.6465     0.1245   5.192 2.72e-07 ***
+locationman          -2.2618     0.1761 -12.845  &lt; 2e-16 ***
+locationmtt          -0.3180     0.1761  -1.806 0.071399 .  
+locationse           -2.0068     0.1761 -11.396  &lt; 2e-16 ***
+depthmd               0.3787     0.1761   2.151 0.031845 *  
+depthsh               0.5602     0.1761   3.181 0.001531 ** 
+locationman:depthmd   2.4369     0.2490   9.786  &lt; 2e-16 ***
+locationmtt:depthmd  -0.5960     0.2490  -2.393 0.016959 *  
+locationse:depthmd   -0.9650     0.2490  -3.875 0.000117 ***
+locationman:depthsh   2.6054     0.2490  10.462  &lt; 2e-16 ***
+locationmtt:depthsh  -2.4090     0.2490  -9.674  &lt; 2e-16 ***
+locationse:depthsh   -2.1662     0.2490  -8.699  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.9645 on 708 degrees of freedom
+Multiple R-squared:  0.6976,    Adjusted R-squared:  0.6929 
+F-statistic: 148.5 on 11 and 708 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob.lm.logit, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: logit(cover)
+               Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept)     25.08   1 26.9575 2.721e-07 ***
+location       239.10   3 85.6764 &lt; 2.2e-16 ***
+depth            9.80   2  5.2689  0.005353 ** 
+location:depth 521.62   6 93.4568 &lt; 2.2e-16 ***
+Residuals      658.60 708                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<p><strong>Random Effects</strong></p>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plob_2016_aov<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">aov</span>(cover <span class="sc">~</span> location <span class="sc">*</span> depth <span class="sc">+</span> <span class="fu">Error</span>(transect), <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob_2016_aov<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Error: transect
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+Residuals  3 0.1008 0.03361               
+
+Error: Within
+                Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+location         3  33.51  11.171  387.04  &lt; 2e-16 ***
+depth            2   1.49   0.747   25.89 1.42e-11 ***
+location:depth   6  18.23   3.039  105.28  &lt; 2e-16 ***
+Residuals      705  20.35   0.029                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<p>Using the library <code>nlme</code> for mixed effects modeling.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plob_2016_lme<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(cover <span class="sc">~</span> location <span class="sc">*</span> depth, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> transect, <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob_2016_lme<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed-effects model fit by REML
+  Data: rpn_2016_main.plob 
+        AIC       BIC   logLik
+  -423.2166 -359.3424 225.6083
+
+Random effects:
+ Formula: ~1 | transect
+        (Intercept)  Residual
+StdDev: 0.005134199 0.1698882
+
+Fixed effects:  cover ~ location * depth 
+                         Value  Std.Error  DF    t-value p-value
+(Intercept)          0.6556667 0.02208220 705  29.692095  0.0000
+locationman         -0.4366667 0.03101720 705 -14.078210  0.0000
+locationmtt         -0.0741667 0.03101720 705  -2.391146  0.0171
+locationse          -0.3940000 0.03101720 705 -12.702629  0.0000
+depthmd              0.0758333 0.03101720 705   2.444880  0.0147
+depthsh              0.1078333 0.03101720 705   3.476565  0.0005
+locationman:depthmd  0.4761667 0.04386495 705  10.855289  0.0000
+locationmtt:depthmd -0.1338333 0.04386495 705  -3.051031  0.0024
+locationse:depthmd  -0.2076667 0.04386495 705  -4.734228  0.0000
+locationman:depthsh  0.5020000 0.04386495 705  11.444218  0.0000
+locationmtt:depthsh -0.4598333 0.04386495 705 -10.482934  0.0000
+locationse:depthsh  -0.3290000 0.04386495 705  -7.500294  0.0000
+ Correlation: 
+                    (Intr) lctnmn lctnmt loctns dpthmd dpthsh lctnmn:dpthm
+locationman         -0.702                                                
+locationmtt         -0.702  0.500                                         
+locationse          -0.702  0.500  0.500                                  
+depthmd             -0.702  0.500  0.500  0.500                           
+depthsh             -0.702  0.500  0.500  0.500  0.500                    
+locationman:depthmd  0.497 -0.707 -0.354 -0.354 -0.707 -0.354             
+locationmtt:depthmd  0.497 -0.354 -0.707 -0.354 -0.707 -0.354  0.500      
+locationse:depthmd   0.497 -0.354 -0.354 -0.707 -0.707 -0.354  0.500      
+locationman:depthsh  0.497 -0.707 -0.354 -0.354 -0.354 -0.707  0.500      
+locationmtt:depthsh  0.497 -0.354 -0.707 -0.354 -0.354 -0.707  0.250      
+locationse:depthsh   0.497 -0.354 -0.354 -0.707 -0.354 -0.707  0.250      
+                    lctnmtt:dpthm lctns:dpthm lctnmn:dpths lctnmtt:dpths
+locationman                                                             
+locationmtt                                                             
+locationse                                                              
+depthmd                                                                 
+depthsh                                                                 
+locationman:depthmd                                                     
+locationmtt:depthmd                                                     
+locationse:depthmd   0.500                                              
+locationman:depthsh  0.250         0.250                                
+locationmtt:depthsh  0.500         0.250       0.500                    
+locationse:depthsh   0.250         0.500       0.500        0.500       
+
+Standardized Within-Group Residuals:
+        Min          Q1         Med          Q3         Max 
+-3.69181696 -0.55477390 -0.04249682  0.46862092  4.16040535 
+
+Number of Observations: 720
+Number of Groups: 4 </code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob_2016_lme<span class="fl">.1</span>, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: cover
+                 Chisq Df Pr(&gt;Chisq)    
+(Intercept)    881.620  1  &lt; 2.2e-16 ***
+location       305.038  3  &lt; 2.2e-16 ***
+depth           12.752  2   0.001702 ** 
+location:depth 631.703  6  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
 </div>
 
 
