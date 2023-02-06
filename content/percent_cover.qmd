@@ -22,15 +22,28 @@ require(car)
 ```
 
 ```{r, include = FALSE}
-rpn_2016_main2 <- read.csv("rpn_2016_main2.csv")
+rpn_2016_main2 <- read.csv("rpn_2016_main2.csv") %>%
+  as_tibble(rpn_2016_main2) %>%
+  mutate_at(vars(location, depth, group), factor)
+```
+
+```{r}
+rpn_2016_main2
 ```
 
 <div style = "margin-bottom:50px;">
 ```{r}
 rpn_2016_main.plob <- 
   as_tibble(rpn_2016_main2) %>%
-  mutate_at(vars(location, photo, group), factor) %>%
-  filter(group == "plob")
+  filter(group == "plob") %>%
+  mutate(transect = case_when(
+    startsWith(photo, "t1_") ~ "transect1",
+    startsWith(photo, "t2_") ~ "transect2",
+    startsWith(photo, "t3_") ~ "transect3",
+    startsWith(photo, "t4_") ~ "transect4"
+  )
+) %>%
+  mutate_at(vars(location, group, transect), factor)
 ```
 </div>
 
@@ -39,7 +52,7 @@ rpn_2016_main.plob
 ```
 
 First use a two-way ANOVA on the raw data, percent cover given by the proportional value.
-Run a two-way ANOVA without interaction becuase there is no replication of .
+Run a two-way ANOVA with and without interaction.
 
 ```{r}
 plob.lm1 <- lm(cover ~ location + depth, data = rpn_2016_main.plob)
@@ -56,9 +69,8 @@ summary(plob.lm1)
 ```
 
 ```{r}
-Anova(plob.lm1)
+Anova(plob.lm1, type = "III")
 ```
-
 
 ```{r}
 par(mfrow = c(2, 2))
@@ -70,27 +82,69 @@ summary(plob.lm2)
 ```
 
 ```{r}
-plob.bm4 <- betareg(plob.scaled ~ bov, data = rpn_2016_main.plob_scaled, 
-                    link = c("logit"), link.phi = NULL,
-                   type = c("ML"))
+Anova(plob.lm2, type = "III")
 ```
 
+**Two-Way ANOVA -- Logit transformed**
 
+<div style = "margin-bottom:50px;">
+```{r}
+plob.lm.logit <- lm(logit(cover) ~ location * depth, data = rpn_2016_main.plob)
+```
+</div>
 
-summary(plob.bm4)
+<div style = "margin-bottom:50px;">
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.lm.logit)
+```
+</div>
 
+<div style = "margin-bottom:50px;">
+```{r}
+summary(plob.lm.logit)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+Anova(plob.lm.logit, type = "III")
+```
+</div>
+
+**Random Effects**
+
+<div style = "margin-bottom:50px;">
+```{r, eval = T, collapse = T, message = FALSE}
+plob_2016_aov.1 <- aov(cover ~ location * depth + Error(transect), data = rpn_2016_main.plob)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+summary(plob_2016_aov.1)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+Using the library `nlme` for mixed effects modeling.
 
 ```{r}
-rpn_2016_main <- read_csv("rpn_2016_main.sum1.csv")
+plob_2016_lme.1 <- lme(cover ~ location * depth, random = ~ 1 | transect, data = rpn_2016_main.plob)
 ```
+</div>
 
+<div style = "margin-bottom:50px;">
 ```{r}
-rpn_2016_main
+summary(plob_2016_lme.1)
 ```
+</div>
 
-
-
-
+<div style = "margin-bottom:50px;">
+```{r}
+Anova(plob_2016_lme.1, type = "III")
+```
+</div>
 
 
 
