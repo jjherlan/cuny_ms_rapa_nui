@@ -498,6 +498,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div style="margin-bottom:50px;">
 <p>Using the library <code>nlme</code> for mixed effects modeling.</p>
+</div>
+<div style="margin-bottom:50px;">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plob_2016_lme<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(cover <span class="sc">~</span> location <span class="sc">*</span> depth, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> transect, <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -579,6 +581,253 @@ depth           12.752  2   0.001702 **
 location:depth 631.703  6  &lt; 2.2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<p><strong>Generalized Linear Model</strong></p>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>plob.glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(successes, failures) <span class="sc">~</span> location <span class="sc">*</span> depth, </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plob.glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob.glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(successes, failures) ~ location * depth, 
+    family = binomial(link = "logit"), data = rpn_2016_main.plob)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-13.5062   -2.8432   -0.1689    2.0385   15.3285  
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          0.64404    0.02717  23.704   &lt;2e-16 ***
+locationman         -1.91555    0.04138 -46.287   &lt;2e-16 ***
+locationmtt         -0.31511    0.03772  -8.353   &lt;2e-16 ***
+locationse          -1.68137    0.04001 -42.022   &lt;2e-16 ***
+depthmd              0.35820    0.03983   8.992   &lt;2e-16 ***
+depthsh              0.52792    0.04076  12.953   &lt;2e-16 ***
+locationman:depthmd  2.12727    0.05920  35.931   &lt;2e-16 ***
+locationmtt:depthmd -0.59307    0.05422 -10.938   &lt;2e-16 ***
+locationse:depthmd  -1.22331    0.06265 -19.527   &lt;2e-16 ***
+locationman:depthsh  2.32096    0.06173  37.599   &lt;2e-16 ***
+locationmtt:depthsh -2.06799    0.05735 -36.061   &lt;2e-16 ***
+locationse:depthsh  -2.65571    0.08254 -32.175   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 34968  on 719  degrees of freedom
+Residual deviance: 11314  on 708  degrees of freedom
+AIC: 14341
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob.glm1, <span class="at">type =</span> <span class="st">"III"</span>) <span class="co"># Type III because...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: cbind(successes, failures)
+               LR Chisq Df Pr(&gt;Chisq)    
+location         3702.5  3  &lt; 2.2e-16 ***
+depth             179.5  2  &lt; 2.2e-16 ***
+location:depth   8397.1  6  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<p><strong>Generalized linear model – <em>quasibinomial</em> </strong></p>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>plob.glm1_qu <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(successes, failures) <span class="sc">~</span> location <span class="sc">*</span> depth, </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">family =</span> <span class="fu">quasibinomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob.glm1_qu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(successes, failures) ~ location * depth, 
+    family = quasibinomial(link = "logit"), data = rpn_2016_main.plob)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-13.5062   -2.8432   -0.1689    2.0385   15.3285  
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           0.6440     0.1092   5.896 5.75e-09 ***
+locationman          -1.9155     0.1664 -11.514  &lt; 2e-16 ***
+locationmtt          -0.3151     0.1517  -2.078  0.03808 *  
+locationse           -1.6814     0.1608 -10.453  &lt; 2e-16 ***
+depthmd               0.3582     0.1601   2.237  0.02561 *  
+depthsh               0.5279     0.1638   3.222  0.00133 ** 
+locationman:depthmd   2.1273     0.2380   8.938  &lt; 2e-16 ***
+locationmtt:depthmd  -0.5931     0.2180  -2.721  0.00667 ** 
+locationse:depthmd   -1.2233     0.2518  -4.857 1.46e-06 ***
+locationman:depthsh   2.3210     0.2482   9.353  &lt; 2e-16 ***
+locationmtt:depthsh  -2.0680     0.2305  -8.970  &lt; 2e-16 ***
+locationse:depthsh   -2.6557     0.3318  -8.004 4.95e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasibinomial family taken to be 16.16064)
+
+    Null deviance: 34968  on 719  degrees of freedom
+Residual deviance: 11314  on 708  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob.glm1_qu, <span class="at">type =</span> <span class="st">"III"</span>) <span class="co"># Type III because...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: cbind(successes, failures)
+               LR Chisq Df Pr(&gt;Chisq)    
+location         229.11  3  &lt; 2.2e-16 ***
+depth             11.11  2   0.003868 ** 
+location:depth   519.60  6  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<p><strong>Generalized Linear Mixed-Effects Model</strong></p>
+<p>Using the library <code>glmer</code> for mixed effects modeling</p>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>plob_2016_glmer<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">glmer</span>(<span class="fu">cbind</span>(successes, failures) <span class="sc">~</span> location <span class="sc">*</span> depth <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> transect),</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> rpn_2016_main.plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plob_2016_glmer<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: binomial  ( logit )
+Formula: cbind(successes, failures) ~ location * depth + (1 | transect)
+   Data: rpn_2016_main.plob
+
+     AIC      BIC   logLik deviance df.resid 
+ 14300.2  14359.7  -7137.1  14274.2      707 
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-13.5684  -2.3122  -0.1417   1.9735  22.6147 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ transect (Intercept) 0.004228 0.06502 
+Number of obs: 720, groups:  transect, 4
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          0.64470    0.04238  15.213   &lt;2e-16 ***
+locationman         -1.91740    0.04140 -46.309   &lt;2e-16 ***
+locationmtt         -0.31543    0.03774  -8.357   &lt;2e-16 ***
+locationse          -1.68304    0.04003 -42.043   &lt;2e-16 ***
+depthmd              0.35852    0.03985   8.996   &lt;2e-16 ***
+depthsh              0.52837    0.04078  12.958   &lt;2e-16 ***
+locationman:depthmd  2.12928    0.05923  35.949   &lt;2e-16 ***
+locationmtt:depthmd -0.59363    0.05425 -10.943   &lt;2e-16 ***
+locationse:depthmd  -1.22418    0.06267 -19.534   &lt;2e-16 ***
+locationman:depthsh  2.32309    0.06175  37.618   &lt;2e-16 ***
+locationmtt:depthsh -2.06992    0.05737 -36.078   &lt;2e-16 ***
+locationse:depthsh  -2.65707    0.08256 -32.184   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+              (Intr) lctnmn lctnmt loctns dpthmd dpthsh lctnmn:dpthm
+locationman   -0.421                                                
+locationmtt   -0.462  0.473                                         
+locationse    -0.436  0.446  0.489                                  
+depthmd       -0.438  0.448  0.491  0.463                           
+depthsh       -0.428  0.438  0.480  0.453  0.455                    
+lctnmn:dpthm   0.294 -0.699 -0.331 -0.312 -0.673 -0.306             
+lctnmtt:dpthm  0.321 -0.329 -0.696 -0.340 -0.735 -0.334  0.494      
+lctns:dpthm    0.278 -0.285 -0.312 -0.639 -0.636 -0.289  0.428      
+lctnmn:dpths   0.282 -0.670 -0.317 -0.299 -0.300 -0.660  0.469      
+lctnmtt:dpths  0.304 -0.311 -0.658 -0.322 -0.323 -0.711  0.217      
+lctns:dpths    0.211 -0.216 -0.237 -0.485 -0.225 -0.494  0.151      
+              lctnmtt:dpthm lctns:dpthm lctnmn:dpths lctnmtt:dpths
+locationman                                                       
+locationmtt                                                       
+locationse                                                        
+depthmd                                                           
+depthsh                                                           
+lctnmn:dpthm                                                      
+lctnmtt:dpthm                                                     
+lctns:dpthm    0.467                                              
+lctnmn:dpths   0.221         0.191                                
+lctnmtt:dpths  0.458         0.206       0.469                    
+lctns:dpths    0.165         0.310       0.326        0.351       </code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(plob_2016_glmer<span class="fl">.1</span>, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III Wald chisquare tests)
+
+Response: cbind(successes, failures)
+                 Chisq Df Pr(&gt;Chisq)    
+(Intercept)     231.44  1  &lt; 2.2e-16 ***
+location       3362.57  3  &lt; 2.2e-16 ***
+depth           180.05  2  &lt; 2.2e-16 ***
+location:depth 7131.50  6  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>dispersion_glmer <span class="ot">&lt;-</span> <span class="cf">function</span>(modelglmer){</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## computing  estimated scale  ( binomial model)</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#following  D. Bates :</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#That quantity is the square root of the penalized residual sum of</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#squares divided by n, the number of observations, evaluated as:</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">residuals</span>(modelglmer))</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(  <span class="fu">sqrt</span>( <span class="fu">sum</span>(<span class="fu">c</span>(<span class="fu">residuals</span>(modelglmer), modelglmer<span class="sc">@</span>u) <span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> n ) )</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="margin-bottom:50px;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dispersion_glmer</span>(plob_2016_glmer<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.954668</code></pre>
 </div>
 </div>
 </div>
