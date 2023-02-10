@@ -20,6 +20,7 @@ require(VGAM)
 require(Rmisc)
 require(car)
 require(lme4)
+require(multcomp)
 ```
 
 ```{r, include = FALSE}
@@ -246,10 +247,8 @@ dispersion_glmer <- function(modelglmer){
 ```{r}
 dispersion_glmer(plob_2016_glmer.1)
 ```
+
 </div>
-
-
-
 
 
 
