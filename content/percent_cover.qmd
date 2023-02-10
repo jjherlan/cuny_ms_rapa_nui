@@ -19,6 +19,7 @@ require(rstan)
 require(VGAM)
 require(Rmisc)
 require(car)
+require(lme4)
 ```
 
 ```{r, include = FALSE}
@@ -127,7 +128,13 @@ summary(plob_2016_aov.1)
 </div>
 
 <div style = "margin-bottom:50px;">
+
 Using the library `nlme` for mixed effects modeling.
+
+</div>
+
+
+<div style = "margin-bottom:50px;">
 
 ```{r}
 plob_2016_lme.1 <- lme(cover ~ location * depth, random = ~ 1 | transect, data = rpn_2016_main.plob)
@@ -146,11 +153,98 @@ Anova(plob_2016_lme.1, type = "III")
 ```
 </div>
 
+**Generalized Linear Model**
+
+<div style = "margin-bottom:50px;">
+```{r}
+plob.glm1 <- glm(cbind(successes, failures) ~ location * depth, 
+                     family = binomial(link = "logit"), data = rpn_2016_main.plob)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.glm1)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+summary(plob.glm1)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+Anova(plob.glm1, type = "III") # Type III because...
+```
+</div>
+
+**Generalized linear model -- *quasibinomial* **
+
+<div style = "margin-bottom:50px;">
+```{r}
+plob.glm1_qu <- glm(cbind(successes, failures) ~ location * depth, 
+                      family = quasibinomial(link = "logit"), rpn_2016_main.plob)
+
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+summary(plob.glm1_qu)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+Anova(plob.glm1_qu, type = "III") # Type III because...
+```
+</div>
 
 
+**Generalized Linear Mixed-Effects Model**
 
+Using the library `glmer` for mixed effects modeling
 
+<div style = "margin-bottom:50px;">
+```{r}
+plob_2016_glmer.1 <- glmer(cbind(successes, failures) ~ location * depth + (1 | transect),
+                     family = binomial(link = "logit"), data = rpn_2016_main.plob)
+```
+</div>
 
+<div style = "margin-bottom:50px;">
+```{r}
+summary(plob_2016_glmer.1)
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+Anova(plob_2016_glmer.1, type = "III")
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+dispersion_glmer <- function(modelglmer){
+  ## computing  estimated scale  ( binomial model)
+  #following  D. Bates :
+  #That quantity is the square root of the penalized residual sum of
+  #squares divided by n, the number of observations, evaluated as:
+  n <- length(residuals(modelglmer))
+  return(  sqrt( sum(c(residuals(modelglmer), modelglmer@u) ^2) / n ) )
+}
+```
+</div>
+
+<div style = "margin-bottom:50px;">
+```{r}
+dispersion_glmer(plob_2016_glmer.1)
+```
+</div>
 
 
 
