@@ -139,6 +139,7 @@ Using the library `nlme` for mixed effects modeling.
 ```{r}
 plob_2016_lme.1 <- lme(cover ~ location * depth, random = ~ 1 | transect, data = rpn_2016_main.plob)
 ```
+
 </div>
 
 <div style = "margin-bottom:50px;">
@@ -241,6 +242,7 @@ dispersion_glmer <- function(modelglmer){
 </div>
 
 <div style = "margin-bottom:50px;">
+
 ```{r}
 dispersion_glmer(plob_2016_glmer.1)
 ```
